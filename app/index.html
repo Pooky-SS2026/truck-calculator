@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Truck Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: Arial; padding: 20px; max-width: 400px; margin: auto; }
+    input, button { width: 100%; padding: 12px; margin: 8px 0; font-size: 16px; }
+    .decision { padding: 15px; color: white; text-align: center; border-radius: 10px; margin-top: 10px; font-weight: bold; }
+    .green { background: green; }
+    .yellow { background: orange; }
+    .red { background: red; }
+  </style>
+</head>
+<body>
+
+<h2 id="title">Truck Job Calculator</h2>
+<button onclick="toggleLang()">🌐 EN / TH</button>
+
+<input id="loaded" type="number" placeholder="Loaded km">
+<input id="unloaded" type="number" placeholder="Unloaded km">
+<input id="idle" type="number" placeholder="Idle hours">
+<input id="revenue" type="number" placeholder="Revenue (baht)">
+
+<button onclick="calculate()">Calculate</button>
+
+<div id="result"></div>
+<div id="decision" class="decision"></div>
+
+<script>
+let lang = "EN";
+
+function toggleLang() {
+  lang = lang === "EN" ? "TH" : "EN";
+  document.getElementById("title").innerText =
+    lang === "EN" ? "Truck Job Calculator" : "คำนวณงานรถบรรทุก";
+}
+
+function calculate() {
+  let loaded = Number(document.getElementById("loaded").value);
+  let unloaded = Number(document.getElementById("unloaded").value);
+  let idle = Number(document.getElementById("idle").value);
+  let revenue = Number(document.getElementById("revenue").value);
+
+  let totalKm = loaded + unloaded;
+  let cost = totalKm * 16 + idle * 90;
+  let profit = revenue - cost;
+
+  document.getElementById("result").innerHTML =
+    (lang === "EN" ? "Distance: " : "ระยะทาง: ") + totalKm + " km<br>" +
+    (lang === "EN" ? "Cost: " : "ต้นทุน: ") + cost + " ฿<br>" +
+    (lang === "EN" ? "Profit: " : "กำไร: ") + profit + " ฿";
+
+  let decisionBox = document.getElementById("decision");
+
+  if (profit >= 1000) {
+    decisionBox.className = "decision green";
+    decisionBox.innerText = lang === "EN" ? "ACCEPT" : "รับงาน";
+  } else if (profit >= 500) {
+    decisionBox.className = "decision yellow";
+    decisionBox.innerText = lang === "EN" ? "CONSIDER" : "พิจารณา";
+  } else {
+    decisionBox.className = "decision red";
+    decisionBox.innerText = lang === "EN" ? "REJECT" : "ไม่รับ";
+  }
+}
+</script>
+
+</body>
+</html>
